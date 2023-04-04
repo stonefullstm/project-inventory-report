@@ -1,6 +1,7 @@
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 import csv
+import json
 
 
 class Inventory:
@@ -8,6 +9,9 @@ class Inventory:
     def import_data(cls, path, type):
         if path.endswith('.csv'):
             stock_list = cls.read_csv(path)
+            return cls.select_report(stock_list, type)
+        elif path.endswith('.json'):
+            stock_list = cls.read_json(path)
             return cls.select_report(stock_list, type)
         else:
             pass
@@ -20,6 +24,11 @@ class Inventory:
             for product in stock_dict:
                 stock_list.append(product)
         return stock_list
+
+    @classmethod
+    def read_json(cls, path):
+        with open(path, 'r') as file:
+            return json.load(file)
 
     @classmethod
     def select_report(cls, stock_list, type):
