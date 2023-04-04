@@ -2,6 +2,7 @@ from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 import csv
 import json
+import xmltodict
 
 
 class Inventory:
@@ -13,8 +14,9 @@ class Inventory:
         elif path.endswith('.json'):
             stock_list = cls.read_json(path)
             return cls.select_report(stock_list, type)
-        else:
-            pass
+        elif path.endswith('.xml'):
+            stock_list = cls.read_xml(path)
+            return cls.select_report(stock_list, type)
 
     @classmethod
     def read_csv(cls, path):
@@ -29,6 +31,14 @@ class Inventory:
     def read_json(cls, path):
         with open(path, 'r') as file:
             return json.load(file)
+
+    # source: https://www.digitalocean.com/community/
+    #   tutorials/python-xml-to-json-dict
+    @classmethod
+    def read_xml(cls, path):
+        with open(path, 'r') as file:
+            data_dict = xmltodict.parse(file.read())
+            return data_dict["dataset"]["record"]
 
     @classmethod
     def select_report(cls, stock_list, type):
