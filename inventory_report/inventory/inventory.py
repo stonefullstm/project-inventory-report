@@ -23,8 +23,7 @@ class Inventory:
         stock_list = []
         with open(path, 'r') as file:
             stock_dict = csv.DictReader(file)
-            for product in stock_dict:
-                stock_list.append(product)
+            stock_list = list(stock_dict)
         return stock_list
 
     @classmethod
