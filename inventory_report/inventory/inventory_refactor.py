@@ -9,7 +9,8 @@ class InventoryRefactor(Iterable):
 
     def import_data(self, path, type):
         result = self.importer.import_data(path)
-        self.data = list(result)
+        for item in result:
+            self.data.append(item)
 
     def __iter__(self):
         return InventoryIterator(self.data)
